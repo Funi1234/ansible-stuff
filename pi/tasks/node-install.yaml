@@ -1,0 +1,41 @@
+---
+
+- shell: echo  $(uname -m)
+  register: architecture
+
+- name: Download Node.js LTS
+  get_url: url=https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv7l.tar.gz dest=/home/pi/
+  notify: armv7
+  when: (architecture.stdout == "armv7l")
+
+- set_fact: 
+    nodezip: "/home/pi/node-v4.2.2-linux-armv7l.tar.gz"
+    folder: "node-v4.2.2-linux-armv7l"
+  when: (architecture.stdout == "armv7l")
+
+- name: Download Node.js LTS
+  get_url: url=https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv6l.tar.gz dest=/home/pi/
+  notify: armv6
+  when: (architecture.stdout == "armv6l")
+
+- set_fact: 
+    nodezip: "/home/pi/node-v4.2.2-linux-armv6l.tar.gz"
+    folder: "node-v4.2.2-linux-armv6l"
+  when: (architecture.stdout == "armv6l")
+
+- debug: var=nodezip
+
+- name: Unzip node
+  unarchive: src={{ nodezip }} dest=/home/pi/ copy=no
+
+- name: Install node
+  command: chdir=/home/pi/{{folder}} {{ item }}
+  become: yes
+  become_method: sudo
+  with_items:
+    -  cp -R . /usr/local/
+
+- shell: echo  $(node -v)
+  register: node_version
+
+- debug: msg={{node_version.stdout}}

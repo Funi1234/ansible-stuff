@@ -1,0 +1,5 @@
+---
+- hosts: pis
+  user: pi
+  roles:
+  - role: pi

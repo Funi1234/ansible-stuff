@@ -1,0 +1,4 @@
+---
+#- include: core-install.yaml
+#- include: security-install.yaml
+- include: node-install.yaml

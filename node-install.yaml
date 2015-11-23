@@ -1,0 +1,25 @@
+---
+
+- command: uname -m
+  register: architecture
+
+- name: Download Node.js LTS
+  get_url: url=https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv7l.tar.gz dest=/home/pi/
+  when: (architecture == "armv7l")
+  notify: armv7
+
+- name: Download Node.js LTS
+  get_url: url=https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv6l.tar.gz dest=/home/pi/
+  when: (architecture == "armv6l")
+  notify: armv6
+
+- name: Unzip Node
+  unarchive: src={{ nodezip }} dest=/home/pi/ copy=no
+
+
+handlers:
+- name: armv6
+  set_fact: nodezip="/home/pi/node-v4.2.2-linux-armv6l.tar.gz"
+
+- name: armv7
+  set_fact: nodezip="/home/pi/node-v4.2.2-linux-armv7l.tar.gz"

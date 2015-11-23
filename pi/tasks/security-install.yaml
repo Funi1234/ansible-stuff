@@ -1,0 +1,21 @@
+---
+
+- name: Download Fail2Ban
+  #unarchive: src=https://github.com/fail2ban/fail2ban/archive/0.9.3.tar.gz dest=/home/pi/
+  get_url: url=https://github.com/fail2ban/fail2ban/archive/0.9.3.tar.gz dest=/home/pi/
+  #unarchive: src=/home/pi/fail2ban-0.9.3.tar.gz dest=/home/pi/ copy=no
+#  notify:
+#    -  Unzip Fail2Ban
+
+#handlers:
+- name: Unzip Fail2Ban
+  unarchive: src=/home/pi/fail2ban-0.9.3.tar.gz dest=/home/pi/ copy=no
+#  notify:
+#    -  Install Fail2Ban
+
+- name: Install Fail2Ban
+  command: chdir=/home/pi/fail2ban-0.9.3 {{ item }}
+  become: yes
+  become_method: sudo
+  with_items:
+    -  python setup.py install

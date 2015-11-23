@@ -1,0 +1,58 @@
+---
+- name: Install Vim
+  apt: name=vim
+  become: yes
+  become_method: sudo
+
+- name: Install Bash Completion
+  apt: name=bash-completion
+  become: yes
+  become_method: sudo
+
+- name: Install Build Tools
+  apt: name={{ item }}
+  become: yes
+  become_method: sudo
+  with_items:
+   - build-essential
+   - automake
+   - cmake
+
+- name: Install Python
+  apt: name={{ item }}
+  become: yes
+  become_method: sudo
+  with_items:
+    - python
+    - python-pip
+    - python-dev
+    - python-lxml
+
+- name: Install Git
+  apt: name=git-core
+  become: yes
+  become_method: sudo
+
+- name: Install Curl
+  apt: name=curl
+  become: yes
+  become_method: sudo
+
+- name: Install TMux
+  apt: name=tmux
+  become: yes
+  become_method: sudo
+
+- name: Install ESpeak
+  apt: name=espeak
+  become: yes
+  become_method: sudo
+
+- name: Setup Say IP On Boot
+  copy: src=./sayIPbs dest=/etc/init.d/ mode=754
+  become: yes
+  become_method: sudo
+
+- command: update-rc.d -f sayIPbs defaults
+  become: yes
+  become_method: sudo

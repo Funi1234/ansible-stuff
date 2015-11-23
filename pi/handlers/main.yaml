@@ -1,0 +1,9 @@
+---
+
+- name: armv6
+  set_fact: nodezip="/home/pi/node-v4.2.2-linux-armv6l.tar.gz"
+  notify: Install node
+
+- name: armv7
+  set_fact: nodezip="/home/pi/node-v4.2.2-linux-armv7l.tar.gz"
+  notify: Install node
